@@ -65,7 +65,7 @@ export default async function BlogPage({
             <input type="hidden" name="id" value={blog.id} />
             <button
               type="submit"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-border rounded-lg text-neutral-300 hover:border-emerald-500/50 hover:text-emerald-400 transition-all text-sm"
+              className="cursor-pointer inline-flex items-center gap-1.5 px-3 py-1.5 border border-border rounded-lg text-neutral-300 hover:border-emerald-500/50 hover:text-emerald-400 transition-all text-sm"
             >
               &#9829; {blog.likes.toLocaleString()}
             </button>

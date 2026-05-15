@@ -50,7 +50,7 @@ export default function Navbar() {
                 <span className="text-sm text-neutral-500">{session.user?.name}</span>
                 <button
                   onClick={() => signOut()}
-                  className="text-sm text-neutral-400 hover:text-red-400 transition-colors"
+                  className="cursor-pointer px-3 py-1.5 rounded-lg text-sm text-neutral-400 hover:text-red-400 hover:bg-red-500/10 border border-transparent hover:border-red-500/20 transition-all"
                 >
                   Logout
                 </button>
@@ -73,7 +73,7 @@ export default function Navbar() {
           {/* Mobile hamburger */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="md:hidden p-2 text-neutral-400 hover:text-neutral-100 transition-colors"
+            className="md:hidden p-2 text-neutral-400 hover:text-neutral-100 transition-colors cursor-pointer"
             aria-label="Toggle menu"
           >
             <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -105,7 +105,7 @@ export default function Navbar() {
                 <span className="block text-sm text-neutral-500">{session.user?.name}</span>
                 <button
                   onClick={() => signOut()}
-                  className="text-sm text-neutral-400 hover:text-red-400 transition-colors"
+                  className="cursor-pointer w-full text-left px-3 py-1.5 rounded-lg text-sm text-neutral-400 hover:text-red-400 hover:bg-red-500/10 border border-transparent hover:border-red-500/20 transition-all"
                 >
                   Logout
                 </button>
@@ -115,7 +115,7 @@ export default function Navbar() {
                 <Link
                   href="/login"
                   onClick={() => setMenuOpen(false)}
-                  className="block text-sm text-neutral-400 hover:text-neutral-100 transition-colors"
+                  className="block cursor-pointer px-3 py-1.5 rounded-lg text-sm text-neutral-400 hover:text-neutral-100 hover:bg-surface-2 transition-colors"
                 >
                   Login
                 </Link>
