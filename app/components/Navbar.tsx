@@ -27,7 +27,7 @@ export default function Navbar() {
     { href: "/", label: "Home" },
     { href: "/blogs", label: "Blogs" },
     { href: "/users", label: "Users" },
-    ...(session ? [{ href: "/blogs/new", label: "Create new" }] : []),
+    ...(session ? [{ href: "/blogs/new", label: "Create new" }, { href: "/me", label: "My page" }] : []),
   ]
 
   return (
