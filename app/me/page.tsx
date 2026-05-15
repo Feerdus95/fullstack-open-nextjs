@@ -3,6 +3,7 @@ import { redirect } from "next/navigation"
 import Link from "next/link"
 import { getCurrentUser } from "@/app/services/session"
 import { generateToken } from "@/app/actions/users"
+import { markAsRead } from "@/app/actions/blogs"
 import { getReadingListForUser } from "@/app/lib/readingList"
 
 export default async function MePage() {
@@ -12,7 +13,9 @@ export default async function MePage() {
   const user = await getCurrentUser()
   if (!user) redirect("/login")
 
-  const readingList = await getReadingListForUser(user.id)
+  const allEntries = await getReadingListForUser(user.id)
+  const unread = allEntries.filter((e) => !e.read)
+  const read = allEntries.filter((e) => e.read)
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
@@ -31,24 +34,70 @@ export default async function MePage() {
       <div className="bg-surface border border-border rounded-xl p-6 mt-6">
         <h2 className="text-lg font-semibold mb-4">Reading List</h2>
 
-        {readingList.length === 0 ? (
+        {allEntries.length === 0 ? (
           <p className="text-neutral-500 text-sm">Your reading list is empty.</p>
         ) : (
-          <div className="space-y-3">
-            {readingList.map((entry) => (
-              <div
-                key={entry.id}
-                className="flex items-center gap-3 bg-surface-2 border border-border rounded-lg p-3"
-              >
-                <div className="w-2 h-2 rounded-full bg-emerald-500 shrink-0" />
-                <Link
-                  href={`/blogs/${entry.blog.id}`}
-                  className="text-neutral-100 hover:text-emerald-400 transition-colors no-underline text-sm font-medium"
-                >
-                  {entry.blog.title}
-                </Link>
-              </div>
-            ))}
+          <div className="space-y-6">
+            <div>
+              <h3 className="text-sm font-semibold text-neutral-400 uppercase tracking-wider mb-3">
+                Unread ({unread.length})
+              </h3>
+              {unread.length === 0 ? (
+                <p className="text-neutral-600 text-sm">All caught up!</p>
+              ) : (
+                <div className="space-y-2">
+                  {unread.map((entry) => (
+                    <div
+                      key={entry.id}
+                      className="flex items-center gap-3 bg-surface-2 border border-border rounded-lg p-3"
+                    >
+                      <div className="w-2 h-2 rounded-full bg-emerald-500 shrink-0" />
+                      <Link
+                        href={`/blogs/${entry.blog.id}`}
+                        className="text-neutral-100 hover:text-emerald-400 transition-colors no-underline text-sm font-medium flex-1"
+                      >
+                        {entry.blog.title}
+                      </Link>
+                      <form action={markAsRead}>
+                        <input type="hidden" name="entryId" value={entry.id} />
+                        <button
+                          type="submit"
+                          className="cursor-pointer px-3 py-1 border border-border hover:border-emerald-500/50 text-neutral-400 hover:text-emerald-400 rounded-lg transition-all text-xs"
+                        >
+                          Mark as read
+                        </button>
+                      </form>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div>
+              <h3 className="text-sm font-semibold text-neutral-400 uppercase tracking-wider mb-3">
+                Read ({read.length})
+              </h3>
+              {read.length === 0 ? (
+                <p className="text-neutral-600 text-sm">No blogs marked as read yet.</p>
+              ) : (
+                <div className="space-y-2">
+                  {read.map((entry) => (
+                    <div
+                      key={entry.id}
+                      className="flex items-center gap-3 bg-surface-2 border border-border rounded-lg p-3 opacity-60"
+                    >
+                      <div className="w-2 h-2 rounded-full bg-neutral-500 shrink-0" />
+                      <Link
+                        href={`/blogs/${entry.blog.id}`}
+                        className="text-neutral-400 hover:text-emerald-400 transition-colors no-underline text-sm font-medium flex-1 line-through"
+                      >
+                        {entry.blog.title}
+                      </Link>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         )}
       </div>

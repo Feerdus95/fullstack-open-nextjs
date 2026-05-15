@@ -3,7 +3,7 @@
 import { redirect } from "next/navigation"
 import { revalidatePath } from "next/cache"
 import { addBlog, incrementBlogLikes } from "@/app/lib/blogs"
-import { addToReadingList } from "@/app/lib/readingList"
+import { addToReadingList, markEntryAsRead } from "@/app/lib/readingList"
 import { auth } from "@/auth"
 import { getCurrentUser } from "@/app/services/session"
 
@@ -70,6 +70,17 @@ export async function addBlogToReadingList(formData: FormData) {
 
   await addToReadingList(user.id, blogId)
   revalidatePath(`/blogs/${blogId}`)
+}
+
+export async function markAsRead(formData: FormData) {
+  const entryIdStr = formData.get("entryId")
+  if (!entryIdStr) return
+
+  const entryId = Number(entryIdStr)
+  if (isNaN(entryId)) return
+
+  await markEntryAsRead(entryId)
+  revalidatePath("/me")
 }
 
 export async function likeBlog(formData: FormData) {

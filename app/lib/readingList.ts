@@ -19,3 +19,7 @@ export const isInReadingList = async (userId: number, blogId: number) => {
 export const addToReadingList = async (userId: number, blogId: number) => {
   await db.insert(readingList).values({ userId, blogId })
 }
+
+export const markEntryAsRead = async (entryId: number) => {
+  await db.update(readingList).set({ read: true }).where(eq(readingList.id, entryId))
+}
