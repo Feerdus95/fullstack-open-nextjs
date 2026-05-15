@@ -3,63 +3,134 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useSession, signOut } from "next-auth/react"
+import { useState } from "react"
 
 export default function Navbar() {
   const pathname = usePathname()
   const { data: session } = useSession()
+  const [menuOpen, setMenuOpen] = useState(false)
+
+  const linkActive = (href: string) => {
+    if (href === "/") return pathname === "/"
+    return pathname.startsWith(href)
+  }
+
+  const linkClass = (href: string) => {
+    const base = "px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-150"
+    if (linkActive(href)) {
+      return `${base} text-emerald-400 bg-emerald-500/10`
+    }
+    return `${base} text-neutral-400 hover:text-neutral-100 hover:bg-surface-2`
+  }
+
+  const links = [
+    { href: "/", label: "Home" },
+    { href: "/blogs", label: "Blogs" },
+    { href: "/users", label: "Users" },
+    ...(session ? [{ href: "/blogs/new", label: "Create new" }] : []),
+  ]
 
   return (
-    <nav className="navbar">
-      <Link href="/" className="navbar__brand">
-        NextNotes
-      </Link>
-      <ul className="navbar__links" style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-        <li>
-          <Link href="/" className={`navbar__link${pathname === "/" ? " navbar__link--active" : ""}`}>
-            Home
+    <nav className="sticky top-0 z-50 backdrop-blur-xl bg-surface/80 border-b border-border">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16">
+          <Link href="/" className="text-xl font-bold text-emerald-500 tracking-tight">
+            NextNotes
           </Link>
-        </li>
-        <li>
-          <Link href="/blogs" className={`navbar__link${pathname.startsWith("/blogs") ? " navbar__link--active" : ""}`}>
-            Blogs
-          </Link>
-        </li>
-        <li>
-          <Link href="/users" className={`navbar__link${pathname.startsWith("/users") ? " navbar__link--active" : ""}`}>
-            Users
-          </Link>
-        </li>
-        {session ? (
-          <>
-            <li>
-              <Link href="/blogs/new" className={`navbar__link${pathname === "/blogs/new" ? " navbar__link--active" : ""}`}>
-                Create new
+
+          {/* Desktop */}
+          <div className="hidden md:flex items-center gap-1">
+            {links.map((link) => (
+              <Link key={link.href} href={link.href} className={linkClass(link.href)}>
+                {link.label}
               </Link>
-            </li>
-            <li style={{ marginLeft: "1rem", color: "var(--text-muted)", fontSize: "0.9rem" }}>
-              <em>{session.user?.name} logged in</em>
-            </li>
-            <li>
-              <button onClick={() => signOut()} className="navbar__link" style={{ background: "transparent", border: "none", cursor: "pointer", fontFamily: "inherit" }}>
-                Logout
-              </button>
-            </li>
-          </>
-        ) : (
-          <>
-            <li>
-              <Link href="/login" className={`navbar__link${pathname === "/login" ? " navbar__link--active" : ""}`}>
-                Login
+            ))}
+            {session ? (
+              <div className="flex items-center gap-3 ml-4 pl-4 border-l border-border">
+                <span className="text-sm text-neutral-500">{session.user?.name}</span>
+                <button
+                  onClick={() => signOut()}
+                  className="text-sm text-neutral-400 hover:text-red-400 transition-colors"
+                >
+                  Logout
+                </button>
+              </div>
+            ) : (
+              <div className="flex items-center gap-2 ml-4 pl-4 border-l border-border">
+                <Link href="/login" className={linkClass("/login")}>
+                  Login
+                </Link>
+                <Link
+                  href="/register"
+                  className="px-3 py-2 rounded-lg text-sm font-semibold bg-emerald-500 hover:bg-emerald-400 text-white transition-colors"
+                >
+                  Register
+                </Link>
+              </div>
+            )}
+          </div>
+
+          {/* Mobile hamburger */}
+          <button
+            onClick={() => setMenuOpen(!menuOpen)}
+            className="md:hidden p-2 text-neutral-400 hover:text-neutral-100 transition-colors"
+            aria-label="Toggle menu"
+          >
+            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              {menuOpen ? (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              ) : (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              )}
+            </svg>
+          </button>
+        </div>
+
+        {/* Mobile menu */}
+        {menuOpen && (
+          <div className="md:hidden pb-4 space-y-1">
+            {links.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setMenuOpen(false)}
+                className={linkClass(link.href) + " block"}
+              >
+                {link.label}
               </Link>
-            </li>
-            <li>
-              <Link href="/register" className={`navbar__link${pathname === "/register" ? " navbar__link--active" : ""}`}>
-                Register
-              </Link>
-            </li>
-          </>
+            ))}
+            <hr className="border-border my-2" />
+            {session ? (
+              <div className="px-3 py-2 space-y-2">
+                <span className="block text-sm text-neutral-500">{session.user?.name}</span>
+                <button
+                  onClick={() => signOut()}
+                  className="text-sm text-neutral-400 hover:text-red-400 transition-colors"
+                >
+                  Logout
+                </button>
+              </div>
+            ) : (
+              <div className="px-3 py-2 space-y-2">
+                <Link
+                  href="/login"
+                  onClick={() => setMenuOpen(false)}
+                  className="block text-sm text-neutral-400 hover:text-neutral-100 transition-colors"
+                >
+                  Login
+                </Link>
+                <Link
+                  href="/register"
+                  onClick={() => setMenuOpen(false)}
+                  className="inline-block px-3 py-2 rounded-lg text-sm font-semibold bg-emerald-500 hover:bg-emerald-400 text-white transition-colors"
+                >
+                  Register
+                </Link>
+              </div>
+            )}
+          </div>
         )}
-      </ul>
+      </div>
     </nav>
   )
 }

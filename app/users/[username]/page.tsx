@@ -9,40 +9,52 @@ export default async function UserPage({
 }) {
   const { username } = await params
   const user = await getUserWithBlogsByUsername(username)
-
-  if (!user) {
-    notFound()
-  }
+  if (!user) notFound()
 
   return (
-    <div className="page">
-      <Link href="/users" className="back-link" style={{ marginBottom: "2rem" }}>
-        ← Back to users
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+      <Link
+        href="/users"
+        className="inline-flex items-center gap-1.5 text-neutral-500 hover:text-emerald-400 transition-colors text-sm mb-8"
+      >
+        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+        </svg>
+        Back to users
       </Link>
-      
-      <div className="page__header" style={{ marginTop: "1.5rem" }}>
+
+      <div className="flex items-center gap-4 mb-10">
+        <div className="w-14 h-14 rounded-full bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-xl font-bold shrink-0">
+          {user.name.charAt(0).toUpperCase()}
+        </div>
         <div>
-          <h1 className="page__title">{user.name}</h1>
-          <p className="page__subtitle">
-            Username: @{user.username}
-          </p>
+          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">{user.name}</h1>
+          <p className="text-neutral-500">@{user.username}</p>
         </div>
       </div>
-      
-      <div style={{ marginTop: "2rem" }}>
-        <h3>Added blogs</h3>
+
+      <div className="border-t border-border pt-8">
+        <h2 className="text-lg font-semibold mb-4">
+          Added blogs {user.blogs ? `(${user.blogs.length})` : ""}
+        </h2>
         {user.blogs && user.blogs.length > 0 ? (
-          <ul className="blog-list" style={{ marginTop: "1rem" }}>
+          <div className="space-y-3">
             {user.blogs.map((blog) => (
-              <li key={blog.id} className="blog-card" style={{ padding: "1rem" }}>
-                <Link href={`/blogs/${blog.id}`} style={{ fontWeight: 600, color: "var(--accent)", textDecoration: "none" }}>
+              <div
+                key={blog.id}
+                className="bg-surface border border-border rounded-xl p-4 hover:border-emerald-500/30 hover:bg-surface-2 transition-all"
+              >
+                <Link
+                  href={`/blogs/${blog.id}`}
+                  className="text-neutral-100 hover:text-emerald-400 font-medium transition-colors no-underline"
+                >
                   {blog.title}
                 </Link>
-              </li>
+              </div>
             ))}
-          </ul>
+          </div>
         ) : (
-          <p style={{ marginTop: "1rem", color: "var(--text-muted)" }}>This user hasn't added any blogs yet.</p>
+          <p className="text-neutral-500">This user hasn&apos;t added any blogs yet.</p>
         )}
       </div>
     </div>

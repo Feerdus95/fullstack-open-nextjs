@@ -4,13 +4,14 @@ import { useNotification } from "./NotificationContext"
 
 export default function Notification() {
   const { message, type } = useNotification()
-
   if (!message) return null
 
-  const bgColor = type === "success" ? "bg-green-600" : "bg-red-600"
-
   return (
-    <div className={`px-4 py-2.5 mb-2.5 rounded text-white ${bgColor} fixed top-4 right-4 z-[100] shadow-lg animate-in fade-in slide-in-from-top-4`}>
+    <div
+      className={`fixed top-4 right-4 z-[100] px-4 py-2.5 rounded-lg text-white text-sm font-medium shadow-lg backdrop-blur transition-all ${
+        type === "success" ? "bg-emerald-500" : "bg-red-500/90"
+      }`}
+    >
       {message}
     </div>
   )

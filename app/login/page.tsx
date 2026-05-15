@@ -27,24 +27,42 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="page" style={{ maxWidth: "400px", margin: "0 auto", paddingTop: "4rem" }}>
-      <h2 className="page__title">Login</h2>
-      {error && <div className="error-message" style={{ marginBottom: "1.5rem" }}>{error}</div>}
-      
-      <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-        <div>
-          <label style={{ display: "block", marginBottom: "0.5rem" }}>
+    <div className="max-w-sm mx-auto px-4 py-16 sm:py-24">
+      <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-8">Login</h2>
+
+      {error && (
+        <div className="text-red-400 bg-red-500/10 border border-red-500/20 px-4 py-3 rounded-lg text-sm mb-6">
+          {error}
+        </div>
+      )}
+
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="space-y-1.5">
+          <label className="text-xs font-semibold text-neutral-500 tracking-wider uppercase">
             Username
           </label>
-          <input type="text" name="username" required className="form-input" style={{ width: "100%" }} />
+          <input
+            type="text"
+            name="username"
+            required
+            className="w-full bg-surface border border-border rounded-lg px-4 py-2.5 text-neutral-100 placeholder-neutral-600 outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all"
+          />
         </div>
-        <div>
-          <label style={{ display: "block", marginBottom: "0.5rem" }}>
+        <div className="space-y-1.5">
+          <label className="text-xs font-semibold text-neutral-500 tracking-wider uppercase">
             Password
           </label>
-          <input type="password" name="password" required className="form-input" style={{ width: "100%" }} />
+          <input
+            type="password"
+            name="password"
+            required
+            className="w-full bg-surface border border-border rounded-lg px-4 py-2.5 text-neutral-100 placeholder-neutral-600 outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all"
+          />
         </div>
-        <button type="submit" className="btn-primary" style={{ marginTop: "1rem" }}>
+        <button
+          type="submit"
+          className="w-full px-6 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-white font-semibold rounded-lg transition-colors"
+        >
           Login
         </button>
       </form>

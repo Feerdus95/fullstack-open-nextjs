@@ -11,7 +11,12 @@ const MIN_LENGTHS = {
   password: 4,
 }
 
-export const registerUser = async (prevState: any, formData: FormData) => {
+type RegisterState = {
+  error: string
+  values?: { username: string; name: string }
+}
+
+export const registerUser = async (prevState: RegisterState, formData: FormData) => {
   const username = (formData.get("username") as string)?.trim() || ""
   const name = (formData.get("name") as string)?.trim() || ""
   const password = formData.get("password") as string || ""

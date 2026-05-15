@@ -11,16 +11,8 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { id } = await params
   const blog = await getBlogById(Number(id))
-
-  if (!blog) {
-    return {
-      title: "Blog Not Found",
-    }
-  }
-
-  return {
-    title: `${blog.title} | NextNotes`,
-  }
+  if (!blog) return { title: "Blog Not Found" }
+  return { title: `${blog.title} | NextNotes` }
 }
 
 export default async function BlogPage({
@@ -30,43 +22,76 @@ export default async function BlogPage({
 }) {
   const { id } = await params
   const blog = await getBlogById(Number(id))
-
-  if (!blog) {
-    notFound()
-  }
+  if (!blog) notFound()
 
   return (
-    <div className="page">
-      <Link href="/blogs" className="back-link" style={{ marginBottom: "2rem" }}>
-        ← Back to blogs
+    <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+      <Link
+        href="/blogs"
+        className="inline-flex items-center gap-1.5 text-neutral-500 hover:text-emerald-400 transition-colors text-sm mb-8"
+      >
+        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+        </svg>
+        Back to blogs
       </Link>
-      
-      <article className="blog-card" style={{ marginTop: "1.5rem" }}>
-        <h1 className="blog-card__title" style={{ fontSize: "1.75rem", marginBottom: "1rem" }}>
-          <a href={blog.url} target="_blank" rel="noopener noreferrer">
+
+      <article>
+        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-6 leading-tight">
+          <a
+            href={blog.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-neutral-100 hover:text-emerald-400 transition-colors no-underline"
+          >
             {blog.title}
+            <svg
+              className="inline-block w-5 h-5 ml-2 -mt-0.5 text-neutral-500"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
           </a>
         </h1>
-        
-        <div className="blog-card__meta" style={{ fontSize: "1rem", marginTop: "1.5rem" }}>
-          <span>Written by <strong>{blog.author}</strong></span>
-          
-          <form action={likeBlog} style={{ marginLeft: "auto", display: "flex", alignItems: "center" }}>
+
+        <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-sm mb-10 pb-8 border-b border-border">
+          <span className="text-neutral-400">
+            Written by <strong className="text-neutral-200">{blog.author}</strong>
+          </span>
+
+          <form action={likeBlog} className="flex items-center gap-2">
             <input type="hidden" name="id" value={blog.id} />
-            <button type="submit" className="btn-primary" style={{ padding: "0.25rem 0.75rem", fontSize: "0.85rem", background: "var(--surface-2)", color: "var(--text)", border: "1px solid var(--border)" }}>
-              Like ♥
+            <button
+              type="submit"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-border rounded-lg text-neutral-300 hover:border-emerald-500/50 hover:text-emerald-400 transition-all text-sm"
+            >
+              &#9829; {blog.likes.toLocaleString()}
             </button>
-            <span className="blog-card__likes" style={{ marginLeft: "0.5rem" }}>
-              {blog.likes.toLocaleString()} likes
-            </span>
           </form>
+
+          <a
+            href={blog.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1 px-3 py-1 bg-surface-2 border border-border rounded-full text-xs text-neutral-400 hover:text-emerald-400 transition-colors no-underline"
+          >
+            {new URL(blog.url).hostname}
+          </a>
         </div>
-        
-        <div style={{ marginTop: "2rem", paddingTop: "1.5rem", borderTop: "1px solid var(--border)" }}>
-          <p style={{ marginBottom: "1rem", color: "var(--text-muted)" }}>
-            URL: <a href={blog.url} target="_blank" rel="noopener noreferrer" style={{ color: "var(--accent)" }}>{blog.url}</a>
-          </p>
-        </div>
+
+        <p className="text-neutral-400 text-sm">
+          Visit the original article at{' '}
+          <a
+            href={blog.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-emerald-400 hover:text-emerald-300 underline underline-offset-2"
+          >
+            {blog.url}
+          </a>
+        </p>
       </article>
     </div>
   )

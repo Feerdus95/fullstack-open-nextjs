@@ -28,11 +28,8 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable}`}
-    >
-      <body>
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body className="bg-neutral-950 text-neutral-100 scrollbar-thin scrollbar-thumb-emerald-500/20 scrollbar-track-transparent scrollbar-gutter-stable antialiased min-h-screen">
         <AuthSessionProvider>
           <NotificationProvider>
             <Navbar />

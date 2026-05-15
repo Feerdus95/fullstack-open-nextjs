@@ -11,8 +11,14 @@ const MIN_LENGTHS = {
   url: 5,
 }
 
+type BlogState = {
+  error: string
+  success: boolean
+  values?: { title: string; author: string; url: string }
+}
+
 export async function createBlog(
-  prevState: any,
+  prevState: BlogState,
   formData: FormData
 ) {
   const session = await auth()
