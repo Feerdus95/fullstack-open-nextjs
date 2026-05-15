@@ -10,6 +10,8 @@ export const metadata: Metadata = {
 import { auth } from "@/auth"
 import { redirect } from "next/navigation"
 
+import NewBlogForm from "@/app/components/NewBlogForm"
+
 export default async function NewBlogPage() {
   const session = await auth()
 
@@ -29,53 +31,7 @@ export default async function NewBlogPage() {
         Fill in the details below to add a new blog to the list.
       </p>
 
-      <form action={createBlog} className="blog-form" id="new-blog-form">
-        <div className="form-field">
-          <label htmlFor="title" className="form-label">
-            Title
-          </label>
-          <input
-            id="title"
-            name="title"
-            type="text"
-            required
-            placeholder="e.g. Why I love Next.js"
-            className="form-input"
-          />
-        </div>
-
-        <div className="form-field">
-          <label htmlFor="author" className="form-label">
-            Author
-          </label>
-          <input
-            id="author"
-            name="author"
-            type="text"
-            required
-            placeholder="e.g. Jane Doe"
-            className="form-input"
-          />
-        </div>
-
-        <div className="form-field">
-          <label htmlFor="url" className="form-label">
-            URL
-          </label>
-          <input
-            id="url"
-            name="url"
-            type="url"
-            required
-            placeholder="https://example.com/my-post"
-            className="form-input"
-          />
-        </div>
-
-        <button type="submit" className="btn-primary" id="submit-blog">
-          Add blog
-        </button>
-      </form>
+      <NewBlogForm />
     </div>
   )
 }
