@@ -29,7 +29,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
-      <body className="bg-neutral-950 text-neutral-100 scrollbar-thin scrollbar-thumb-emerald-500/20 scrollbar-track-transparent scrollbar-gutter-stable antialiased min-h-screen">
+      <body className="bg-neutral-950 text-neutral-100 scrollbar-thin scrollbar-thumb-emerald-500/20 scrollbar-track-transparent antialiased min-h-screen">
         <AuthSessionProvider>
           <NotificationProvider>
             <Navbar />
