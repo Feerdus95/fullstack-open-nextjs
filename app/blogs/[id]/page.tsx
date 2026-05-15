@@ -1,8 +1,10 @@
 import { getBlogById } from "@/app/lib/blogs"
-import { likeBlog } from "@/app/actions/blogs"
+import { likeBlog, addBlogToReadingList } from "@/app/actions/blogs"
+import { isInReadingList } from "@/app/lib/readingList"
 import { notFound } from "next/navigation"
 import Link from "next/link"
 import type { Metadata } from "next"
+import { getCurrentUser } from "@/app/services/session"
 
 export async function generateMetadata({
   params,
@@ -23,6 +25,11 @@ export default async function BlogPage({
   const { id } = await params
   const blog = await getBlogById(Number(id))
   if (!blog) notFound()
+
+  const user = await getCurrentUser()
+  const isOwner = user && blog.userId === user.id
+  const alreadyInList = user ? await isInReadingList(user.id, blog.id) : false
+  const showAddToReadingList = user && !isOwner && !alreadyInList
 
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
@@ -70,6 +77,21 @@ export default async function BlogPage({
               &#9829; {blog.likes.toLocaleString()}
             </button>
           </form>
+
+          {showAddToReadingList && (
+            <form action={addBlogToReadingList}>
+              <input type="hidden" name="blogId" value={blog.id} />
+              <button
+                type="submit"
+                className="cursor-pointer inline-flex items-center gap-1.5 px-3 py-1.5 border border-emerald-500/30 bg-emerald-500/10 rounded-lg text-emerald-400 hover:bg-emerald-500/20 transition-all text-sm"
+              >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                </svg>
+                Add to reading list
+              </button>
+            </form>
+          )}
 
           <a
             href={blog.url}

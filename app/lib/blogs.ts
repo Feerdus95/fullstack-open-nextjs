@@ -1,6 +1,6 @@
 import { eq, ilike } from "drizzle-orm"
 import { db } from "@/db"
-import { blogs } from "@/db/schema"
+import { blogs, readingList } from "@/db/schema"
 import { getCurrentUser } from "@/app/services/session"
 
 export interface Blog {
@@ -36,6 +36,9 @@ export const addBlog = async (blog: Omit<Blog, "id" | "likes">) => {
     ...blog,
     userId: user.id
   }).returning()
+
+  await db.insert(readingList).values({ userId: user.id, blogId: result[0].id })
+
   return result[0]
 }
 

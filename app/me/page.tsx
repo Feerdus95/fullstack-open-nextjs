@@ -1,7 +1,9 @@
 import { auth } from "@/auth"
 import { redirect } from "next/navigation"
+import Link from "next/link"
 import { getCurrentUser } from "@/app/services/session"
 import { generateToken } from "@/app/actions/users"
+import { getReadingListForUser } from "@/app/lib/readingList"
 
 export default async function MePage() {
   const session = await auth()
@@ -9,6 +11,8 @@ export default async function MePage() {
 
   const user = await getCurrentUser()
   if (!user) redirect("/login")
+
+  const readingList = await getReadingListForUser(user.id)
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
@@ -22,6 +26,31 @@ export default async function MePage() {
             <p className="text-neutral-400">@{user.username}</p>
           </div>
         </div>
+      </div>
+
+      <div className="bg-surface border border-border rounded-xl p-6 mt-6">
+        <h2 className="text-lg font-semibold mb-4">Reading List</h2>
+
+        {readingList.length === 0 ? (
+          <p className="text-neutral-500 text-sm">Your reading list is empty.</p>
+        ) : (
+          <div className="space-y-3">
+            {readingList.map((entry) => (
+              <div
+                key={entry.id}
+                className="flex items-center gap-3 bg-surface-2 border border-border rounded-lg p-3"
+              >
+                <div className="w-2 h-2 rounded-full bg-emerald-500 shrink-0" />
+                <Link
+                  href={`/blogs/${entry.blog.id}`}
+                  className="text-neutral-100 hover:text-emerald-400 transition-colors no-underline text-sm font-medium"
+                >
+                  {entry.blog.title}
+                </Link>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       <div className="bg-surface border border-border rounded-xl p-6 mt-6">

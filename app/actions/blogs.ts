@@ -3,7 +3,9 @@
 import { redirect } from "next/navigation"
 import { revalidatePath } from "next/cache"
 import { addBlog, incrementBlogLikes } from "@/app/lib/blogs"
+import { addToReadingList } from "@/app/lib/readingList"
 import { auth } from "@/auth"
+import { getCurrentUser } from "@/app/services/session"
 
 const MIN_LENGTHS = {
   title: 5,
@@ -54,6 +56,20 @@ export async function createBlog(
 
   revalidatePath("/blogs")
   return { error: "", success: true }
+}
+
+export async function addBlogToReadingList(formData: FormData) {
+  const blogIdStr = formData.get("blogId")
+  if (!blogIdStr) return
+
+  const user = await getCurrentUser()
+  if (!user) return
+
+  const blogId = Number(blogIdStr)
+  if (isNaN(blogId)) return
+
+  await addToReadingList(user.id, blogId)
+  revalidatePath(`/blogs/${blogId}`)
 }
 
 export async function likeBlog(formData: FormData) {
