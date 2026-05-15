@@ -1,10 +1,13 @@
 "use server"
 
 import { redirect } from "next/navigation"
+import { revalidatePath } from "next/cache"
 import bcrypt from "bcryptjs"
 import { db } from "@/db"
 import { users } from "@/db/schema"
 import { eq } from "drizzle-orm"
+import { auth } from "@/auth"
+import { updateUserToken } from "@/app/lib/users"
 
 const MIN_LENGTHS = {
   username: 4,
@@ -54,4 +57,22 @@ export const registerUser = async (prevState: RegisterState, formData: FormData)
   await db.insert(users).values({ username, name, passwordHash })
 
   redirect("/login")
+}
+
+export const generateToken = async () => {
+  const session = await auth()
+  if (!session?.user?.email) {
+    throw new Error("Not authenticated")
+  }
+
+  const user = await db.query.users.findFirst({
+    where: eq(users.username, session.user.email),
+  })
+  if (!user) {
+    throw new Error("User not found")
+  }
+
+  const token = crypto.randomUUID()
+  await updateUserToken(user.id, token)
+  revalidatePath("/me")
 }
