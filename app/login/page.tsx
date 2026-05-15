@@ -31,7 +31,7 @@ export default function LoginPage() {
       <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-8">Login</h2>
 
       {error && (
-        <div className="text-red-400 bg-red-500/10 border border-red-500/20 px-4 py-3 rounded-lg text-sm mb-6">
+        <div data-testid="error-message" className="text-red-400 bg-red-500/10 border border-red-500/20 px-4 py-3 rounded-lg text-sm mb-6">
           {error}
         </div>
       )}
@@ -61,6 +61,7 @@ export default function LoginPage() {
         </div>
         <button
           type="submit"
+          data-testid="login-button"
           className="cursor-pointer w-full px-6 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-white font-semibold rounded-lg transition-colors"
         >
           Login

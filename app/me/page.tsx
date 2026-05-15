@@ -19,31 +19,31 @@ export default async function MePage() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-      <div className="bg-surface border border-border rounded-xl p-6">
+      <div data-testid="user-profile" className="bg-surface border border-border rounded-xl p-6">
         <div className="flex items-center gap-4">
           <div className="w-16 h-16 rounded-full bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-2xl font-bold shrink-0">
             {user.name.charAt(0).toUpperCase()}
           </div>
           <div>
-            <h1 className="text-2xl font-bold">{user.name}</h1>
-            <p className="text-neutral-400">@{user.username}</p>
+            <h1 className="text-2xl font-bold" data-testid="user-name">{user.name}</h1>
+            <p className="text-neutral-400" data-testid="user-username">@{user.username}</p>
           </div>
         </div>
       </div>
 
-      <div className="bg-surface border border-border rounded-xl p-6 mt-6">
+      <div data-testid="reading-list-section" className="bg-surface border border-border rounded-xl p-6 mt-6">
         <h2 className="text-lg font-semibold mb-4">Reading List</h2>
 
         {allEntries.length === 0 ? (
-          <p className="text-neutral-500 text-sm">Your reading list is empty.</p>
+          <p data-testid="empty-reading-list" className="text-neutral-500 text-sm">Your reading list is empty.</p>
         ) : (
           <div className="space-y-6">
-            <div>
+            <div data-testid="unread-section">
               <h3 className="text-sm font-semibold text-neutral-400 uppercase tracking-wider mb-3">
                 Unread ({unread.length})
               </h3>
               {unread.length === 0 ? (
-                <p className="text-neutral-600 text-sm">All caught up!</p>
+                <p data-testid="no-unread-blogs" className="text-neutral-600 text-sm">All caught up!</p>
               ) : (
                 <div className="space-y-2">
                   {unread.map((entry) => (
@@ -62,6 +62,7 @@ export default async function MePage() {
                         <input type="hidden" name="entryId" value={entry.id} />
                         <button
                           type="submit"
+                          data-testid={`mark-read-${entry.id}`}
                           className="cursor-pointer px-3 py-1 border border-border hover:border-emerald-500/50 text-neutral-400 hover:text-emerald-400 rounded-lg transition-all text-xs"
                         >
                           Mark as read
@@ -102,20 +103,21 @@ export default async function MePage() {
         )}
       </div>
 
-      <div className="bg-surface border border-border rounded-xl p-6 mt-6">
+      <div data-testid="api-token-section" className="bg-surface border border-border rounded-xl p-6 mt-6">
         <h2 className="text-lg font-semibold mb-4">API Token</h2>
 
         {user.token ? (
-          <div className="bg-neutral-950 border border-border rounded-lg px-4 py-3 font-mono text-sm text-emerald-400 break-all select-all">
-            {user.token}
+          <div data-testid="token-display" className="bg-neutral-950 border border-border rounded-lg px-4 py-3 font-mono text-sm text-emerald-400 break-all select-all">
+            <span data-testid="api-token">{user.token}</span>
           </div>
         ) : (
-          <p className="text-neutral-500 text-sm">No API token generated yet.</p>
+          <p data-testid="no-token-message" className="text-neutral-500 text-sm">No API token generated yet.</p>
         )}
 
         <form action={generateToken} className="mt-4">
           <button
             type="submit"
+            data-testid="generate-token-button"
             className="cursor-pointer px-4 py-2 border border-border hover:border-emerald-500/50 text-neutral-300 hover:text-emerald-400 font-semibold rounded-lg transition-colors text-sm"
           >
             {user.token ? "Regenerate token" : "Generate token"}

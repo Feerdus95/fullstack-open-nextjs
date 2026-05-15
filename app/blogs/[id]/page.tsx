@@ -43,12 +43,13 @@ export default async function BlogPage({
         Back to blogs
       </Link>
 
-      <article>
+      <article data-testid="blog-detail">
         <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-6 leading-tight">
           <a
             href={blog.url}
             target="_blank"
             rel="noopener noreferrer"
+            data-testid="blog-title"
             className="text-neutral-100 hover:text-emerald-400 transition-colors no-underline"
           >
             {blog.title}
@@ -65,7 +66,7 @@ export default async function BlogPage({
 
         <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-sm mb-10 pb-8 border-b border-border">
           <span className="text-neutral-400">
-            Written by <strong className="text-neutral-200">{blog.author}</strong>
+            Written by <strong className="text-neutral-200" data-testid="blog-author">{blog.author}</strong>
           </span>
 
           <form action={likeBlog} className="flex items-center gap-2">
@@ -83,6 +84,7 @@ export default async function BlogPage({
               <input type="hidden" name="blogId" value={blog.id} />
               <button
                 type="submit"
+                data-testid="add-to-reading-list-button"
                 className="cursor-pointer inline-flex items-center gap-1.5 px-3 py-1.5 border border-emerald-500/30 bg-emerald-500/10 rounded-lg text-emerald-400 hover:bg-emerald-500/20 transition-all text-sm"
               >
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

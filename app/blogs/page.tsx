@@ -45,8 +45,10 @@ export default async function BlogsPage({
             name="filter"
             defaultValue={filter || ""}
             placeholder="Search by title..."
+            data-testid="filter-input"
             className="w-full pl-10 pr-4 py-2.5 bg-surface border border-border rounded-lg text-neutral-100 placeholder-neutral-600 outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all"
           />
+          <button type="submit" data-testid="search-button" className="sr-only">Search</button>
         </div>
       </form>
 
@@ -58,7 +60,7 @@ export default async function BlogsPage({
           </Link>
         </div>
       ) : (
-        <div className="space-y-4">
+        <div data-testid="blogs-list" className="space-y-4">
           {[...blogs]
             .sort((a, b) => b.likes - a.likes)
             .map((blog) => (
@@ -77,7 +79,7 @@ export default async function BlogsPage({
                 <div className="flex items-center gap-4 text-sm text-neutral-500">
                   <span>by {blog.author}</span>
                   <span className="flex items-center gap-1 text-emerald-400 font-medium">
-                    &#9829; {blog.likes.toLocaleString()}
+                    &#9829; {blog.likes.toLocaleString()} {blog.likes === 1 ? "like" : "likes"}
                   </span>
                 </div>
               </div>

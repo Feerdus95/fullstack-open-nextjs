@@ -67,9 +67,10 @@ export default function NewBlogForm() {
 
       <button
         type="submit"
+        data-testid="create-blog-button"
         className="cursor-pointer w-full sm:w-auto px-6 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-white font-semibold rounded-lg transition-colors"
       >
-        Add blog
+        Create
       </button>
 
       {state.error && (

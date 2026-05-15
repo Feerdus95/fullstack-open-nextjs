@@ -16,6 +16,10 @@ const MIN_LENGTHS = {
 
 type RegisterState = {
   error: string
+  fieldErrors?: {
+    username?: string
+    passwordConfirm?: string
+  }
   values?: { username: string; name: string }
 }
 
@@ -27,9 +31,12 @@ export const registerUser = async (prevState: RegisterState, formData: FormData)
 
   const values = { username, name }
   const errors: string[] = []
+  const fieldErrors: RegisterState["fieldErrors"] = {}
 
   if (username.length < MIN_LENGTHS.username) {
-    errors.push(`Username must be at least ${MIN_LENGTHS.username} characters long`)
+    const msg = `Username must be at least ${MIN_LENGTHS.username} characters long`
+    errors.push(msg)
+    fieldErrors.username = msg
   }
 
   if (password.length < MIN_LENGTHS.password) {
@@ -37,11 +44,13 @@ export const registerUser = async (prevState: RegisterState, formData: FormData)
   }
 
   if (password !== passwordConfirm) {
-    errors.push("Passwords do not match")
+    const msg = "Passwords do not match"
+    errors.push(msg)
+    fieldErrors.passwordConfirm = msg
   }
 
   if (errors.length > 0) {
-    return { error: errors.join(". "), values }
+    return { error: errors.join(". "), fieldErrors, values }
   }
 
   const existingUser = await db.query.users.findFirst({

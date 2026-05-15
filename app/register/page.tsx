@@ -11,8 +11,20 @@ export default function RegisterPage() {
       <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-8">Register</h2>
 
       {state.error && (
-        <div className="text-red-400 bg-red-500/10 border border-red-500/20 px-4 py-3 rounded-lg text-sm mb-6">
+        <div data-testid="error-message" className="text-red-400 bg-red-500/10 border border-red-500/20 px-4 py-3 rounded-lg text-sm mb-6">
           {state.error}
+        </div>
+      )}
+
+      {state.fieldErrors?.username && (
+        <div data-testid="username-error" className="text-red-400 bg-red-500/10 border border-red-500/20 px-4 py-3 rounded-lg text-sm mb-6">
+          {state.fieldErrors.username}
+        </div>
+      )}
+
+      {state.fieldErrors?.passwordConfirm && (
+        <div data-testid="passwordConfirm-error" className="text-red-400 bg-red-500/10 border border-red-500/20 px-4 py-3 rounded-lg text-sm mb-6">
+          {state.fieldErrors.passwordConfirm}
         </div>
       )}
 
@@ -61,6 +73,7 @@ export default function RegisterPage() {
         </div>
         <button
           type="submit"
+          data-testid="register-button"
           className="cursor-pointer w-full px-6 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-white font-semibold rounded-lg transition-colors"
         >
           Register
