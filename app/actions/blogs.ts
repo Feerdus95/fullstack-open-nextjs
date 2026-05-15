@@ -11,7 +11,7 @@ export async function createBlog(formData: FormData) {
 
   if (!title || !author || !url) return
 
-  addBlog({ title, author, url })
+  await addBlog({ title, author, url })
 
   revalidatePath("/blogs")
   redirect("/blogs")
@@ -24,7 +24,7 @@ export async function likeBlog(formData: FormData) {
   const id = Number(idStr)
   if (isNaN(id)) return
 
-  incrementBlogLikes(id)
+  await incrementBlogLikes(id)
   
   // Revalidate the individual blog page and the list
   revalidatePath(`/blogs/${id}`)

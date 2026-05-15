@@ -13,12 +13,7 @@ export default async function BlogsPage({
   searchParams: Promise<{ filter?: string }>
 }) {
   const { filter } = await searchParams
-  let blogs = getBlogs()
-
-  if (filter) {
-    const lowerFilter = filter.toLowerCase()
-    blogs = blogs.filter((blog) => blog.title.toLowerCase().includes(lowerFilter))
-  }
+  const blogs = await getBlogs(filter)
 
   return (
     <div className="page">

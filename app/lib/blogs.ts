@@ -1,5 +1,6 @@
-import fs from "fs"
-import path from "path"
+import { eq, ilike } from "drizzle-orm"
+import { db } from "@/db"
+import { blogs } from "@/db/schema"
 
 export interface Blog {
   id: number
@@ -9,39 +10,35 @@ export interface Blog {
   likes: number
 }
 
-// Resolve relative to the project root, not to .next/server
-const DATA_FILE = path.join(process.cwd(), "app", "data", "blogs.json")
-
-export function getBlogs(): Blog[] {
-  const raw = fs.readFileSync(DATA_FILE, "utf-8")
-  return JSON.parse(raw) as Blog[]
-}
-
-export function addBlog(blog: Omit<Blog, "id" | "likes">): Blog {
-  const blogs = getBlogs()
-  const newBlog: Blog = {
-    id: Date.now(),
-    likes: 0,
-    ...blog,
+export const getBlogs = async (filter?: string) => {
+  if (filter) {
+    return db.query.blogs.findMany({
+      where: ilike(blogs.title, `%${filter}%`),
+    })
   }
-  blogs.push(newBlog)
-  fs.writeFileSync(DATA_FILE, JSON.stringify(blogs, null, 2), "utf-8")
-  return newBlog
+  return db.query.blogs.findMany()
 }
 
-export function getBlogById(id: number): Blog | undefined {
-  const blogs = getBlogs()
-  return blogs.find((blog) => blog.id === id)
+export const getBlogById = async (id: number) => {
+  return db.query.blogs.findFirst({
+    where: eq(blogs.id, id),
+  })
 }
 
-export function incrementBlogLikes(id: number): Blog | undefined {
-  const blogs = getBlogs()
-  const blogIndex = blogs.findIndex((blog) => blog.id === id)
-  
-  if (blogIndex === -1) return undefined
-  
-  blogs[blogIndex].likes += 1
-  fs.writeFileSync(DATA_FILE, JSON.stringify(blogs, null, 2), "utf-8")
-  
-  return blogs[blogIndex]
+export const addBlog = async (blog: Omit<Blog, "id" | "likes">) => {
+  const result = await db.insert(blogs).values(blog).returning()
+  return result[0]
+}
+
+export const incrementBlogLikes = async (id: number) => {
+  const blog = await getBlogById(id)
+  if (blog) {
+    const result = await db
+      .update(blogs)
+      .set({ likes: blog.likes + 1 })
+      .where(eq(blogs.id, id))
+      .returning()
+    return result[0]
+  }
+  return undefined
 }

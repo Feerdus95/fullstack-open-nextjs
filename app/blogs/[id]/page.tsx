@@ -10,7 +10,7 @@ export async function generateMetadata({
   params: Promise<{ id: string }>
 }): Promise<Metadata> {
   const { id } = await params
-  const blog = getBlogById(Number(id))
+  const blog = await getBlogById(Number(id))
 
   if (!blog) {
     return {
@@ -29,7 +29,7 @@ export default async function BlogPage({
   params: Promise<{ id: string }>
 }) {
   const { id } = await params
-  const blog = getBlogById(Number(id))
+  const blog = await getBlogById(Number(id))
 
   if (!blog) {
     notFound()
