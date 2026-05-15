@@ -18,6 +18,8 @@ export const metadata: Metadata = {
   description: "A simple notes app built with Next.js",
 }
 
+import AuthSessionProvider from "./components/SessionProvider"
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -29,8 +31,10 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable}`}
     >
       <body>
-        <Navbar />
-        <main>{children}</main>
+        <AuthSessionProvider>
+          <Navbar />
+          <main>{children}</main>
+        </AuthSessionProvider>
       </body>
     </html>
   )

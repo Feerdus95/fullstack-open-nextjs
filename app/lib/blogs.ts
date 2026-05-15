@@ -1,6 +1,7 @@
 import { eq, ilike } from "drizzle-orm"
 import { db } from "@/db"
 import { blogs } from "@/db/schema"
+import { getCurrentUser } from "@/app/services/session"
 
 export interface Blog {
   id: number
@@ -26,7 +27,15 @@ export const getBlogById = async (id: number) => {
 }
 
 export const addBlog = async (blog: Omit<Blog, "id" | "likes">) => {
-  const result = await db.insert(blogs).values(blog).returning()
+  const user = await getCurrentUser()
+  if (!user) {
+    throw new Error("Not logged in")
+  }
+
+  const result = await db.insert(blogs).values({
+    ...blog,
+    userId: user.id
+  }).returning()
   return result[0]
 }
 

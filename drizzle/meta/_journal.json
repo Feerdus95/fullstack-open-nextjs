@@ -15,6 +15,13 @@
       "when": 1778859801663,
       "tag": "0001_spicy_sentry",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1778865989940,
+      "tag": "0002_needy_blink",
+      "breakpoints": true
     }
   ]
 }
