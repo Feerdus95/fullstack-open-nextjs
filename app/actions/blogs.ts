@@ -41,13 +41,13 @@ export async function createBlog(
   }
 
   if (errors.length > 0) {
-    return { error: errors.join(". "), values }
+    return { error: errors.join(". "), values, success: false }
   }
 
   await addBlog({ title, author, url })
 
   revalidatePath("/blogs")
-  redirect("/blogs")
+  return { error: "", success: true }
 }
 
 export async function likeBlog(formData: FormData) {

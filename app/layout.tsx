@@ -19,6 +19,8 @@ export const metadata: Metadata = {
 }
 
 import AuthSessionProvider from "./components/SessionProvider"
+import { NotificationProvider } from "./components/NotificationContext"
+import Notification from "./components/Notification"
 
 export default function RootLayout({
   children,
@@ -32,8 +34,11 @@ export default function RootLayout({
     >
       <body>
         <AuthSessionProvider>
-          <Navbar />
-          <main>{children}</main>
+          <NotificationProvider>
+            <Navbar />
+            <Notification />
+            <main>{children}</main>
+          </NotificationProvider>
         </AuthSessionProvider>
       </body>
     </html>
