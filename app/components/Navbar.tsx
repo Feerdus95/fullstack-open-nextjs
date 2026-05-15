@@ -40,7 +40,7 @@ export default function Navbar() {
               <em>{session.user?.name} logged in</em>
             </li>
             <li>
-              <button onClick={() => signOut()} style={{ background: "none", border: "none", color: "var(--accent)", cursor: "pointer", textDecoration: "underline", padding: 0 }}>
+              <button onClick={() => signOut()} className="navbar__link" style={{ background: "transparent", border: "none", cursor: "pointer", fontFamily: "inherit" }}>
                 Logout
               </button>
             </li>

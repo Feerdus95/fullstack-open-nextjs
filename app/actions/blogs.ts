@@ -5,6 +5,12 @@ import { revalidatePath } from "next/cache"
 import { addBlog, incrementBlogLikes } from "@/app/lib/blogs"
 import { auth } from "@/auth"
 
+const MIN_LENGTHS = {
+  title: 5,
+  author: 5,
+  url: 5,
+}
+
 export async function createBlog(
   prevState: any,
   formData: FormData
@@ -20,16 +26,22 @@ export async function createBlog(
 
   const values = { title, author, url }
 
-  if (title.length < 5) {
-    return { error: "Title must be at least 5 characters long", values }
+  const errors: string[] = []
+
+  if (title.length < MIN_LENGTHS.title) {
+    errors.push(`Title must be at least ${MIN_LENGTHS.title} characters long`)
   }
   
-  if (author.length < 5) {
-    return { error: "Author must be at least 5 characters long", values }
+  if (author.length < MIN_LENGTHS.author) {
+    errors.push(`Author must be at least ${MIN_LENGTHS.author} characters long`)
   }
 
-  if (url.length < 5) {
-    return { error: "URL must be at least 5 characters long", values }
+  if (url.length < MIN_LENGTHS.url) {
+    errors.push(`URL must be at least ${MIN_LENGTHS.url} characters long`)
+  }
+
+  if (errors.length > 0) {
+    return { error: errors.join(". "), values }
   }
 
   await addBlog({ title, author, url })

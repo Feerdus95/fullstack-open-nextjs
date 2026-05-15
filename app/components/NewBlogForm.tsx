@@ -55,7 +55,7 @@ export default function NewBlogForm() {
       </button>
 
       {state.error && (
-        <p style={{ color: "var(--error)", marginTop: "1rem" }}>{state.error}</p>
+        <div className="error-message">{state.error}</div>
       )}
     </form>
   )

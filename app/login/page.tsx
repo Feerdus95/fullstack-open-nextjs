@@ -29,7 +29,7 @@ export default function LoginPage() {
   return (
     <div className="page" style={{ maxWidth: "400px", margin: "0 auto", paddingTop: "4rem" }}>
       <h2 className="page__title">Login</h2>
-      {error && <p style={{ color: "var(--error)", marginBottom: "1rem" }}>{error}</p>}
+      {error && <div className="error-message" style={{ marginBottom: "1.5rem" }}>{error}</div>}
       
       <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
         <div>
