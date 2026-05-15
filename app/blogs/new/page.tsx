@@ -7,7 +7,16 @@ export const metadata: Metadata = {
   description: "Add a new blog post to the list.",
 }
 
-export default function NewBlogPage() {
+import { auth } from "@/auth"
+import { redirect } from "next/navigation"
+
+export default async function NewBlogPage() {
+  const session = await auth()
+
+  if (!session) {
+    redirect("/login")
+  }
+
   return (
     <div className="page">
       <Link href="/blogs" className="back-link" id="back-to-blogs">
