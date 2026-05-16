@@ -2,6 +2,13 @@
 
 A full-stack blog reader built with Next.js 16, Drizzle ORM, PostgreSQL, and Tailwind CSS v4.
 
+Part of the [Full Stack Open](https://fullstackopen.com) — Next.js course (beta).
+
+**In this course:**
+- Build full stack applications with Next.js and React Server Components (App Router, layouts, Server Actions, caching, streaming with Suspense)
+- Persist data with Drizzle ORM and PostgreSQL (typed schemas, migrations, relational and SQL query builders)
+- Implement auth, validation, and production-ready UX (NextAuth, useActionState, notifications, API routes/tokens, Tailwind styling)
+
 ## Tech Stack
 
 - **Framework:** Next.js 16 (App Router, Turbopack)
