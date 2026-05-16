@@ -24,10 +24,10 @@ export default function Navbar() {
   }
 
   const links = [
-    { href: "/", label: "Home" },
-    { href: "/blogs", label: "Blogs" },
-    { href: "/users", label: "Users" },
-    ...(session ? [{ href: "/blogs/new", label: "Create new" }, { href: "/me", label: "My page" }] : []),
+    { href: "/", label: "Home", ariaLabel: "home" },
+    { href: "/blogs", label: "Blogs", ariaLabel: "blogs" },
+    { href: "/users", label: "Users", ariaLabel: "users" },
+    ...(session ? [{ href: "/blogs/new", label: "Create new", ariaLabel: "create new" }, { href: "/me", label: "My page", ariaLabel: "me" }] : []),
   ]
 
   return (
@@ -41,7 +41,7 @@ export default function Navbar() {
           {/* Desktop */}
           <div className="hidden md:flex items-center gap-1">
             {links.map((link) => (
-              <Link key={link.href} href={link.href} className={linkClass(link.href)}>
+              <Link key={link.href} href={link.href} aria-label={link.ariaLabel} className={linkClass(link.href)}>
                 {link.label}
               </Link>
             ))}
@@ -57,11 +57,12 @@ export default function Navbar() {
               </div>
             ) : (
               <div className="flex items-center gap-2 ml-4 pl-4 border-l border-border">
-                <Link href="/login" className={linkClass("/login")}>
+                <Link href="/login" aria-label="login" className={linkClass("/login")}>
                   Login
                 </Link>
                 <Link
                   href="/register"
+                  aria-label="register"
                   className="px-3 py-2 rounded-lg text-sm font-semibold bg-emerald-500 hover:bg-emerald-400 text-white transition-colors"
                 >
                   Register
@@ -89,10 +90,11 @@ export default function Navbar() {
         {/* Mobile menu */}
         {menuOpen && (
           <div className="md:hidden pb-4 space-y-1">
-            {links.map((link) => (
+              {links.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
+                aria-label={link.ariaLabel}
                 onClick={() => setMenuOpen(false)}
                 className={linkClass(link.href) + " block"}
               >
@@ -114,6 +116,7 @@ export default function Navbar() {
               <div className="px-3 py-2 space-y-2">
                 <Link
                   href="/login"
+                  aria-label="login"
                   onClick={() => setMenuOpen(false)}
                   className="block cursor-pointer px-3 py-1.5 rounded-lg text-sm text-neutral-400 hover:text-neutral-100 hover:bg-surface-2 transition-colors"
                 >
@@ -121,6 +124,7 @@ export default function Navbar() {
                 </Link>
                 <Link
                   href="/register"
+                  aria-label="register"
                   onClick={() => setMenuOpen(false)}
                   className="inline-block px-3 py-2 rounded-lg text-sm font-semibold bg-emerald-500 hover:bg-emerald-400 text-white transition-colors"
                 >

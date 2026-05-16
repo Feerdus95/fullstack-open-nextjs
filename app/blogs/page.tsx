@@ -30,8 +30,8 @@ export default async function BlogsPage({
         </Link>
       </div>
 
-      <form action="/blogs" method="GET" className="mb-10">
-        <div className="relative">
+      <form action="/blogs" method="GET" className="mb-10 flex gap-2">
+        <div className="relative flex-1">
           <svg
             className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500"
             fill="none"
@@ -48,8 +48,10 @@ export default async function BlogsPage({
             data-testid="filter-input"
             className="w-full pl-10 pr-4 py-2.5 bg-surface border border-border rounded-lg text-neutral-100 placeholder-neutral-600 outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all"
           />
-          <button type="submit" data-testid="search-button" className="sr-only">Search</button>
         </div>
+        <button type="submit" data-testid="search-button" className="cursor-pointer px-4 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-white font-semibold rounded-lg transition-colors text-sm">
+          Search
+        </button>
       </form>
 
       {blogs.length === 0 ? (

@@ -30,10 +30,11 @@ export default function RegisterPage() {
 
       <form action={formAction} className="space-y-4">
         <div className="space-y-1.5">
-          <label className="text-xs font-semibold text-neutral-500 tracking-wider uppercase">
+          <label htmlFor="username" className="text-xs font-semibold text-neutral-500 tracking-wider uppercase">
             Username
           </label>
           <input
+            id="username"
             type="text"
             name="username"
             defaultValue={state.values?.username}
@@ -41,10 +42,11 @@ export default function RegisterPage() {
           />
         </div>
         <div className="space-y-1.5">
-          <label className="text-xs font-semibold text-neutral-500 tracking-wider uppercase">
+          <label htmlFor="name" className="text-xs font-semibold text-neutral-500 tracking-wider uppercase">
             Name
           </label>
           <input
+            id="name"
             type="text"
             name="name"
             defaultValue={state.values?.name}
@@ -52,20 +54,22 @@ export default function RegisterPage() {
           />
         </div>
         <div className="space-y-1.5">
-          <label className="text-xs font-semibold text-neutral-500 tracking-wider uppercase">
+          <label htmlFor="password" className="text-xs font-semibold text-neutral-500 tracking-wider uppercase">
             Password
           </label>
           <input
+            id="password"
             type="password"
             name="password"
             className="w-full bg-surface border border-border rounded-lg px-4 py-2.5 text-neutral-100 outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all"
           />
         </div>
         <div className="space-y-1.5">
-          <label className="text-xs font-semibold text-neutral-500 tracking-wider uppercase">
+          <label htmlFor="passwordConfirm" className="text-xs font-semibold text-neutral-500 tracking-wider uppercase">
             Confirm Password
           </label>
           <input
+            id="passwordConfirm"
             type="password"
             name="passwordConfirm"
             className="w-full bg-surface border border-border rounded-lg px-4 py-2.5 text-neutral-100 outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all"

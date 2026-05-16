@@ -1,7 +1,5 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import { auth } from "@/auth"
-import { redirect } from "next/navigation"
 import NewBlogForm from "@/app/components/NewBlogForm"
 
 export const metadata: Metadata = {
@@ -10,9 +8,6 @@ export const metadata: Metadata = {
 }
 
 export default async function NewBlogPage() {
-  const session = await auth()
-  if (!session) redirect("/login")
-
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
       <Link
