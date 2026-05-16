@@ -1,36 +1,69 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# NextNotes
+
+A full-stack blog reader built with Next.js 16, Drizzle ORM, PostgreSQL, and Tailwind CSS v4.
+
+## Tech Stack
+
+- **Framework:** Next.js 16 (App Router, Turbopack)
+- **Database:** PostgreSQL via Neon + Drizzle ORM
+- **Authentication:** NextAuth v5 (Credentials provider, JWT)
+- **Styling:** Tailwind CSS v4.3 (dark theme, SaaS-inspired)
+- **Language:** TypeScript
+
+## Features
+
+- Browse and search blogs
+- User registration and login
+- Create and like blogs
+- Personal reading list (unread/read tracking)
+- API token generation
+- Static homepage via MDX
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Running Tests
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+# Install Playwright browsers (first time only)
+npx playwright install chromium
 
-## Learn More
+# Start the dev server and run E2E tests
+npm run test:e2e
+```
 
-To learn more about Next.js, take a look at the following resources:
+Environment variables for testing go in `.env.local`:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+DATABASE_URL=your_neon_database_url
+NEXTAUTH_SECRET=your_secret
+NEXTAUTH_URL=http://localhost:3000
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Project Structure
 
-## Deploy on Vercel
+```
+app/
+├── actions/        # Server Actions
+├── api/            # Route Handlers (/api/me, /api/testing)
+├── blogs/          # Blog list, detail, creation pages
+├── components/     # Navbar, Notification, Forms
+├── lib/            # Data access layer (Drizzle queries)
+├── login/          # Login page
+├── me/             # Profile, reading list, API token
+├── register/       # Registration page
+├── services/       # Session utilities
+└── users/          # User list and profile pages
+db/                 # Schema and migrations
+tests/              # Playwright E2E tests
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Deployment
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Deployed on [Vercel](https://fullstack-open-nextjs.vercel.app).
